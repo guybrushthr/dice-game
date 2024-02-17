@@ -16,6 +16,9 @@
 		"build:app": "rimraf ./build npm run build:frontend && npm run build:server"
 	},
 	"keywords": [],
-	"authors": ["Irina Semichasova", "Michael Riebenbauer"],
+	"authors": [
+		"Irina Semichasova",
+		"Michael Riebenbauer"
+	],
 	"license": "ISC"
 }
