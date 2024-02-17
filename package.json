@@ -4,7 +4,7 @@
 	"description": "Dice game",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "cd server && npm test",
 		"start": "npm run build && node build/index",
 		"lint": "npx eslint ./src",
 		"format": "npx eslint ./src --fix",
