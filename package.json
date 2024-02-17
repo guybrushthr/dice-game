@@ -1,0 +1,21 @@
+{
+	"name": "dice-game",
+	"version": "1.0.0",
+	"description": "Dice game",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "npm run build && node build/index",
+		"lint": "npx eslint ./src",
+		"format": "npx eslint ./src --fix",
+		"docker": "cd server && docker-compose up",
+		"prisma-generate": "cd server && npx prisma generate",
+		"prisma-migrate": "cd server && npx prisma migrate",
+		"build:server": "cd server && npm run build",
+		"build:frontend": "cd client && npm run build",
+		"build:app": "rimraf ./build npm run build:frontend && npm run build:server"
+	},
+	"keywords": [],
+	"authors": ["Irina Semichasova", "Michael Riebenbauer"],
+	"license": "ISC"
+}
