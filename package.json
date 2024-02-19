@@ -4,8 +4,8 @@
 	"description": "Dice game",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "npm run build && node build/index",
+		"test": "cd server && npm test",
 		"lint": "npx eslint ./src",
 		"format": "npx eslint ./src --fix",
 		"docker": "cd server && docker-compose up",
@@ -16,6 +16,9 @@
 		"build:app": "rimraf ./build npm run build:frontend && npm run build:server"
 	},
 	"keywords": [],
-	"authors": ["Irina Semichasova", "Michael Riebenbauer"],
+	"authors": [
+		"Irina Semichasova",
+		"Michael Riebenbauer"
+	],
 	"license": "ISC"
 }
