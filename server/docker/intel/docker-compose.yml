@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  # Database
+  db:
+    platform: linux/x86_64
+    image: mysql:latest
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: yourdb
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_HOST: "%"
+    networks:
+      - mysql-phpmyadmin
+networks:
+  mysql-phpmyadmin:
+
+volumes:
+  db_data:
