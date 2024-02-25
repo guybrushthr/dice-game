@@ -13,6 +13,7 @@ datasource db {
 model Player {
 	player_id Int @id @default(autoincrement())
 	player_name String @unique
+	createdAt DateTime @default(now())
 	games Game[]
 }
 
