@@ -1,11 +1,11 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import { DiceGameController } from '../controllers/DiceGameController';
+import { DiceGameController } from "../controllers/DiceGameController";
 
 export const diceGameRouter = Router();
 
-// diceGameRouter.post('/players', diceGameController.createPlayer);
-diceGameRouter.get('/players', DiceGameController.getAllPlayers);
+diceGameRouter.post("/players", DiceGameController.createPlayer);
+diceGameRouter.get("/players", DiceGameController.getAllPlayers);
 // diceGameRouter.put('/players/:id', diceGameController.updatePlayer);
 
 // diceGameRouter.post('/games/:id', diceGameController.createGame);
