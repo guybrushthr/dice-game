@@ -7,5 +7,9 @@ import {
 export interface DiceGameServiceInterface {
   prisma: PrismaClient;
   getAllPlayers(): Promise<PlayerInterface[]>;
-  createPlayer(player_name: string): Promise<NewPlayerInterface>;
+  createPlayer(player_name: string): Promise<PlayerInterface>;
+  updatePlayer(
+    player_id: number,
+    player_newName: string
+  ): Promise<PlayerInterface>;
 }

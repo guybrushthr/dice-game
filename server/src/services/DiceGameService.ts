@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { DiceGameServiceInterface } from "../services/DiceGameServiceInterface";
+import { PlayerInterface } from "./DiceGameServicePlayerInterface";
 
 export const DiceGameService: DiceGameServiceInterface = {
   prisma: new PrismaClient(),
@@ -13,10 +14,9 @@ export const DiceGameService: DiceGameServiceInterface = {
     });
     return players.map((player) => ({
       ...player,
-      createdAt: new Date(),
     }));
   },
-  async createPlayer(name: string) {
+  async createPlayer(name: string): Promise<PlayerInterface> {
     const playerInDatabase = await this.prisma.player.findFirst({
       where: {
         player_name: name,
@@ -26,9 +26,16 @@ export const DiceGameService: DiceGameServiceInterface = {
       const newPlayer = await this.prisma.player.create({
         data: { player_name: name },
       });
-      return { player_name: newPlayer.player_name };
+      return newPlayer;
     } else {
       throw new Error(`Player with name ${name} already exists`);
     }
+  },
+  async updatePlayer(player_id: number, newName: string) {
+    const updatedPlayer = await this.prisma.player.update({
+      where: { player_id: player_id },
+      data: { player_name: newName },
+    });
+    return updatedPlayer;
   },
 };

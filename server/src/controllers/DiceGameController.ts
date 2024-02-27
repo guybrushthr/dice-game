@@ -20,8 +20,25 @@ export const DiceGameController = {
   createPlayer: async (req: Request, res: Response) => {
     try {
       const newPlayerName: string = req.body.name;
-      const newPlayer = await DiceGameService.createPlayer(newPlayerName);
+      const newPlayer: PlayerInterface = await DiceGameService.createPlayer(
+        newPlayerName
+      );
       return res.status(201).send(newPlayer);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).send({ error: error.message });
+      }
+    }
+  },
+  updatePlayer: async (req: Request, res: Response) => {
+    try {
+      const idExistingPlayer: number = parseInt(req.params.id);
+      const newName: string = req.body.name;
+      const updatedPlayer: PlayerInterface = await DiceGameService.updatePlayer(
+        idExistingPlayer,
+        newName
+      );
+      return res.status(200).send(updatedPlayer);
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).send({ error: error.message });

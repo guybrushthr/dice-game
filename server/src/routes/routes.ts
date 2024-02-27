@@ -6,7 +6,7 @@ export const diceGameRouter = Router();
 
 diceGameRouter.post("/players", DiceGameController.createPlayer);
 diceGameRouter.get("/players", DiceGameController.getAllPlayers);
-// diceGameRouter.put('/players/:id', diceGameController.updatePlayer);
+diceGameRouter.put("/players/:id", DiceGameController.updatePlayer);
 
 // diceGameRouter.post('/games/:id', diceGameController.createGame);
 // diceGameRouter.put('/games/:id', diceGameController.updateGame);
