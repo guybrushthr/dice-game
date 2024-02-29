@@ -1,0 +1,65 @@
+body {
+	background: url(/public/assets/image.jpg) no-repeat center center fixed;
+	font-size: 1.5em;
+}
+.wrapper {
+	max-width: 1200px;
+	margin: 50px auto;
+	padding: 0 15px;
+	width: 100%;
+	border: 1px solid #fff;
+}
+
+.title {
+	text-align: center;
+	font-size: 2rem;
+	font-family: 'Roboto', sans-serif;
+}
+
+.player-form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 50px 0;
+	padding: 20px 0;
+	border: 1px solid #fff;
+}
+
+.dice-form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 50px 0;
+	padding: 20px 0;
+	border: 1px solid #fff;
+}
+
+.ranking {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	margin: 50px 0;
+	padding: 20px 0;
+	border: 1px solid #fff;
+}
+
+.ranking-list {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin: 50px 0;
+	padding: 20px 0;
+	width: 90%;
+	border: 1px solid #fff;
+}
+
+.ranking-table {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin: 50px 0;
+	padding: 20px 0;
+	width: 90%;
+	border: 1px solid #fff;
+}
