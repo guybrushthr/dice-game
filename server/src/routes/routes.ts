@@ -9,8 +9,8 @@ diceGameRouter.get("/players", DiceGameController.getAllPlayers);
 diceGameRouter.put("/players/:id", DiceGameController.updatePlayer); //change name
 
 diceGameRouter.post("/games/:id", DiceGameController.playRound); // specific user plays game
-diceGameRouter.put("/games/:id", DiceGameController.updateGame);
-diceGameRouter.delete("/games/:id", DiceGameController.deleteGame);
+diceGameRouter.delete("/games/:id", DiceGameController.deleteRounds);
+diceGameRouter.get("/games/:id", DiceGameController.listRounds);
 
 diceGameRouter.get("/ranking", DiceGameController.allRanking);
 diceGameRouter.get("/ranking/loser", DiceGameController.loserRanking);

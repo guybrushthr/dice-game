@@ -1,7 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { DiceGameServiceInterface } from "../services/DiceGameServiceInterface";
 import { PlayerInterface } from "./DiceGameServicePlayerInterface";
-import { GameInterface } from "./DiceGameServiceGameInterface";
+import { RoundInterface } from "./DiceGameServiceRoundInterface";
+import { playRound } from "./../game_logic";
 
 export const DiceGameService: DiceGameServiceInterface = {
   prisma: new PrismaClient(),
@@ -41,60 +42,74 @@ export const DiceGameService: DiceGameServiceInterface = {
   },
 
   async playRound(idExistingPlayer: number) {
-    const newGame = await this.prisma.game.create({
+    const newRound = playRound();
+    const playedRound = await this.prisma.round.create({
       data: {
         player_id: idExistingPlayer,
+        dice1: newRound.dice1,
+        dice2: newRound.dice2,
+        sum_dice: newRound.sum_dice,
+        result: newRound.result,
       },
     });
-    return newGame;
+    return playedRound;
   },
 
-  async updateGame(player_id: number): Promise<GameInterface> {
-    const updatedGame = await this.prisma.game.update({
-      where: { game_id: player_id },
-      data: { game_id: player_id },
+  async listRounds(player_id: number) {
+    const allRounds = await this.prisma.round.findMany({
+      where: {
+        player_id: player_id,
+      },
+      select: {
+        round_id: true,
+        dice1: true,
+        dice2: true,
+        sum_dice: true,
+        result: true,
+      },
     });
-    return updatedGame;
+    return allRounds;
   },
 
-  deleteGame(game_id: number) {
-    return this.prisma.game.delete({
-      where: { game_id: game_id },
+  async deleteRounds(player_id: number) {
+    const deleteResult = await this.prisma.round.deleteMany({
+      where: { player_id: player_id },
     });
+    return deleteResult.count;
   },
 
   allRanking() {
-    return this.prisma.game.findMany({
+    return this.prisma.round.findMany({
       select: {
-        game_id: true,
+        round_id: true,
         player_id: true,
       },
     });
   },
 
   loserRanking() {
-    return this.prisma.game.findMany({
+    return this.prisma.round.findMany({
       where: {
-        game_id: {
+        round_id: {
           lt: 3,
         },
       },
       select: {
-        game_id: true,
+        round_id: true,
         player_id: true,
       },
     });
   },
 
   winnerRanking() {
-    return this.prisma.game.findMany({
+    return this.prisma.round.findMany({
       where: {
-        game_id: {
+        round_id: {
           gt: 2,
         },
       },
       select: {
-        game_id: true,
+        round_id: true,
         player_id: true,
       },
     });

@@ -58,11 +58,11 @@ export const DiceGameController = {
     }
   },
 
-  updateGame: async (req: Request, res: Response) => {
+  listRounds: async (req: Request, res: Response) => {
     try {
-      const game_id: number = parseInt(req.params.id);
-      const updatedGame = await DiceGameService.updateGame(game_id);
-      return res.status(201).send(updatedGame);
+      const player_id: number = parseInt(req.params.id);
+      const allRounds = await DiceGameService.listRounds(player_id);
+      return res.status(200).send(allRounds);
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).send({ error: error.message });
@@ -70,11 +70,11 @@ export const DiceGameController = {
     }
   },
 
-  deleteGame: async (req: Request, res: Response) => {
+  deleteRounds: async (req: Request, res: Response) => {
     try {
-      const game_id: number = parseInt(req.params.id);
-      const deletedGame = await DiceGameService.deleteGame(game_id);
-      return res.status(201).send(deletedGame);
+      const player_id: number = parseInt(req.params.id);
+      const deletedGame = await DiceGameService.deleteRounds(player_id);
+      return res.status(200).send(deletedGame);
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).send({ error: error.message });
