@@ -73,8 +73,10 @@ export const DiceGameController = {
   deleteRounds: async (req: Request, res: Response) => {
     try {
       const player_id: number = parseInt(req.params.id);
-      const deletedGame = await DiceGameService.deleteRounds(player_id);
-      return res.status(200).send(deletedGame);
+      const numberOfDeletedRounds = await DiceGameService.deleteRounds(
+        player_id
+      );
+      return res.status(200).send({ numberOfDeletedRounds });
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).send({ error: error.message });

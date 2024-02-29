@@ -2,6 +2,8 @@ import { Round, PrismaClient } from "@prisma/client";
 import {
   NewPlayerInterface,
   PlayerInterface,
+  AllPlayerRankingInterface,
+  PlayerRankingInterface,
 } from "../services/DiceGameServicePlayerInterface";
 import {
   AllRoundsInterface,
