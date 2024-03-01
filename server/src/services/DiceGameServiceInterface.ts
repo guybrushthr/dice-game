@@ -1,21 +1,14 @@
 import { Round, PrismaClient } from "@prisma/client";
-import {
-  NewPlayerInterface,
-  PlayerInterface,
-  AllPlayerRankingInterface,
-  PlayerRankingInterface,
-} from "../services/DiceGameServicePlayerInterface";
+import { PlayerInterface } from "../services/DiceGameServicePlayerInterface";
 import {
   AllRoundsInterface,
-  RoundInterface,
+  WinsAndLossesInterface,
 } from "./DiceGameServiceRoundInterface";
 
 export interface DiceGameServiceInterface {
   prisma: PrismaClient;
-  getAllPlayers(): Promise<PlayerInterface[]>;
-
+  getAllPlayers(): Promise<WinsAndLossesInterface[]>;
   createPlayer(player_name: string): Promise<PlayerInterface>;
-
   updatePlayer(
     player_id: number,
     player_newName: string
@@ -24,7 +17,8 @@ export interface DiceGameServiceInterface {
   playRound(player_id: number): Promise<Round>;
   deleteRounds(player_id: number): Promise<number>;
   listRounds(player_id: number): Promise<AllRoundsInterface[]>;
-  allRanking(): Promise<RoundInterface[]>;
-  loserRanking(): Promise<RoundInterface[]>;
-  winnerRanking(): Promise<RoundInterface[]>;
+
+  allRanking(): Promise<WinsAndLossesInterface[]>;
+  loserRanking(): Promise<WinsAndLossesInterface>;
+  winnerRanking(): Promise<WinsAndLossesInterface>;
 }
