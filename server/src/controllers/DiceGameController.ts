@@ -1,14 +1,12 @@
 import { Request, Response } from "express";
 import { DiceGameService } from "../services/DiceGameService";
-import {
-  NewPlayerInterface,
-  PlayerInterface,
-} from "../services/DiceGameServicePlayerInterface";
+import { PlayerInterface } from "../services/DiceGameServicePlayerInterface";
+import { WinsAndLossesInterface } from "../services/DiceGameServiceRoundInterface";
 
 export const DiceGameController = {
   getAllPlayers: async (_req: Request, res: Response) => {
     try {
-      const allPlayers: PlayerInterface[] =
+      const allPlayers: WinsAndLossesInterface[] =
         await DiceGameService.getAllPlayers();
       return res.status(200).send(allPlayers);
     } catch (error) {

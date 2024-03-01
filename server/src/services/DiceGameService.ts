@@ -1,22 +1,22 @@
 import { PrismaClient } from "@prisma/client";
 import { DiceGameServiceInterface } from "../services/DiceGameServiceInterface";
 import { PlayerInterface } from "./DiceGameServicePlayerInterface";
-import { RoundInterface } from "./DiceGameServiceRoundInterface";
+import { WinsAndLossesInterface } from "./DiceGameServiceRoundInterface";
 import { playRound } from "./../game_logic";
 
 export const DiceGameService: DiceGameServiceInterface = {
   prisma: new PrismaClient(),
   async getAllPlayers() {
-    const players = await this.prisma.player.findMany({
-      select: {
-        player_id: true,
-        player_name: true,
-        createdAt: true,
-      },
-    });
-    return players.map((player) => ({
-      ...player,
-    }));
+    const allRoundsWithPercentage: WinsAndLossesInterface[] = await this.prisma
+      .$queryRaw`
+    SELECT
+        player.player_name,
+        ROUND((COUNT(CASE WHEN round.result = true THEN 1 END) / COUNT(*)) * 100, 2) AS win_percentage
+        FROM Player player
+        JOIN Round round ON player.player_id = round.player_id
+        GROUP BY player.player_id;
+    `;
+    return allRoundsWithPercentage;
   },
   async createPlayer(name: string): Promise<PlayerInterface> {
     const playerInDatabase = await this.prisma.player.findFirst({
@@ -78,40 +78,60 @@ export const DiceGameService: DiceGameServiceInterface = {
     return deleteResult.count;
   },
 
-  allRanking() {
-    return this.prisma.round.findMany({
-      select: {
-        round_id: true,
-        player_id: true,
-      },
+  async allRanking() {
+    const allRounds: WinsAndLossesInterface[] = await this.prisma.$queryRaw`
+    SELECT
+        player.player_name,
+        ROUND((COUNT(CASE WHEN round.result = true THEN 1 END) / COUNT(*)) * 100, 2) AS win_percentage
+        FROM Player player
+        JOIN Round round ON player.player_id = round.player_id
+        GROUP BY player.player_id;
+    `;
+
+    const sortedAllRounds = allRounds.sort(
+      (a, b) => a.win_percentage - b.win_percentage
+    );
+
+    const total: number = sortedAllRounds.reduce((acc, curr): number => {
+      curr.win_percentage = Number(curr.win_percentage);
+      acc += Number(curr.win_percentage);
+      return acc;
+    }, 0);
+    const average = Number((total / sortedAllRounds.length).toFixed(2));
+    sortedAllRounds.push({
+      player_name: "All Players Average",
+      win_percentage: average,
     });
+    return sortedAllRounds;
   },
 
-  loserRanking() {
-    return this.prisma.round.findMany({
-      where: {
-        round_id: {
-          lt: 3,
-        },
-      },
-      select: {
-        round_id: true,
-        player_id: true,
-      },
-    });
+  async loserRanking() {
+    const playerWorstPercentage: WinsAndLossesInterface = await this.prisma
+      .$queryRaw`
+    SELECT
+        player.player_name,
+        ROUND((COUNT(CASE WHEN round.result = true THEN 1 END) / COUNT(*)) * 100, 2) AS win_percentage
+        FROM Player player
+        JOIN Round round ON player.player_id = round.player_id
+        GROUP BY player.player_id 
+        ORDER BY win_percentage ASC 
+        LIMIT 1;
+    `;
+    return playerWorstPercentage;
   },
 
-  winnerRanking() {
-    return this.prisma.round.findMany({
-      where: {
-        round_id: {
-          gt: 2,
-        },
-      },
-      select: {
-        round_id: true,
-        player_id: true,
-      },
-    });
+  async winnerRanking() {
+    const playerBestPercentage: WinsAndLossesInterface = await this.prisma
+      .$queryRaw`
+    SELECT
+        player.player_name,
+        ROUND((COUNT(CASE WHEN round.result = true THEN 1 END) / COUNT(*)) * 100, 2) AS win_percentage
+        FROM Player player
+        JOIN Round round ON player.player_id = round.player_id
+        GROUP BY player.player_id 
+        ORDER BY win_percentage DESC 
+        LIMIT 1;
+    `;
+    return playerBestPercentage;
   },
 };
