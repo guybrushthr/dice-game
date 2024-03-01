@@ -7,7 +7,7 @@ function App() {
 			<h3 className="title">Dice Game</h3>
 			<div className="player-form">
 				<div className="dice">Enter your name:</div>
-				<input type="text" id="name" />
+				<input type="text" placeholder="Your name" required />
 				<button className="btn-submit">Submit</button>
 			</div>
 			<div className="dice-form">
