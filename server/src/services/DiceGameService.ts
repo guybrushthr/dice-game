@@ -10,27 +10,39 @@ export const DiceGameService: DiceGameServiceInterface = {
     const allRoundsWithPercentage: WinsAndLossesInterface[] = await this.prisma
       .$queryRaw`
     SELECT
-        player.player_name,
-        ROUND((COUNT(CASE WHEN round.result = true THEN 1 END) / COUNT(*)) * 100, 2) AS win_percentage
+          player.player_name,
+          CASE
+            WHEN COUNT(round.player_id) = 0 THEN 0
+            ELSE ROUND((COUNT(CASE WHEN round.result = true THEN 1 END) / COUNT(*)) * 100, 2) 
+          END AS win_percentage
         FROM Player player
-        JOIN Round round ON player.player_id = round.player_id
+        LEFT JOIN Round round ON player.player_id = round.player_id
         GROUP BY player.player_id;
     `;
     return allRoundsWithPercentage;
   },
   async createPlayer(name: string): Promise<PlayerInterface> {
-    const playerInDatabase = await this.prisma.player.findFirst({
-      where: {
-        player_name: name,
-      },
-    });
-    if (!playerInDatabase) {
-      const newPlayer = await this.prisma.player.create({
-        data: { player_name: name },
+    if (!name) {
+      const currentTimestamp: number = Date.now();
+      const anonymousName: string = "ANÒNIM_";
+      const anonymousPlayer = await this.prisma.player.create({
+        data: { player_name: anonymousName + currentTimestamp },
       });
-      return newPlayer;
+      return anonymousPlayer;
     } else {
-      throw new Error(`Player with name ${name} already exists`);
+      const playerInDatabase = await this.prisma.player.findFirst({
+        where: {
+          player_name: name,
+        },
+      });
+      if (!playerInDatabase) {
+        const newPlayer = await this.prisma.player.create({
+          data: { player_name: name },
+        });
+        return newPlayer;
+      } else {
+        throw new Error(`Player with name ${name} already exists`);
+      }
     }
   },
   async updatePlayer(player_id: number, newName: string) {

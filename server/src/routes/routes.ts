@@ -12,6 +12,6 @@ diceGameRouter.post("/games/:id", DiceGameController.playRound); // specific use
 diceGameRouter.delete("/games/:id", DiceGameController.deleteRounds);
 diceGameRouter.get("/games/:id", DiceGameController.listRounds);
 
-diceGameRouter.get("/ranking", DiceGameController.allRanking); //
+diceGameRouter.get("/ranking", DiceGameController.allRanking);
 diceGameRouter.get("/ranking/loser", DiceGameController.loserRanking);
 diceGameRouter.get("/ranking/winner", DiceGameController.winnerRanking);
