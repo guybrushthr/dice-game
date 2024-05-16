@@ -4,7 +4,7 @@ Welcome to Dice Game, a simple game with technically beautiful implementation. T
 
 The project is divided into two main parts:
 
-1. client/: This directory contains the frontend of the application, built with React.
+1. client/: This directory will contain the frontend of the application in React, but is not implemented yet.
 2. server/: This directory contains the backend of the application, built with Node.js and Express. It also includes a Docker setup for MySQL and Prisma.
 
 ## Getting Started
